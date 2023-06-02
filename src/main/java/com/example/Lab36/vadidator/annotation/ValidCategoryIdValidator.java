@@ -1,12 +1,17 @@
 package com.example.Lab36.vadidator.annotation;
 
-import com.example.Lab36.entity.Category;
+import com.example.Lab36.vadidator.annotation.ValidUsername;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ValidCategoryIdValidator implements ConstraintValidator<ValidCategoryId, Category> {
+public class ValidUsernameValidator implements ConstraintValidator<ValidUsername, String> {
+    @Autowired
+    private IUserRepository userRepository;
     @Override
-    public boolean isValid(Category category, ConstraintValidatorContext context){
-        return category != null && category.getId()!= null;
+    public boolean isValid(String username, ConstraintValidatorContext context){
+        if(userRepository == null)
+            return true;
+        return userRepository.findByUsername(username)== null;
     }
 }
